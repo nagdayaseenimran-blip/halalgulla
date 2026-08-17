@@ -34,8 +34,15 @@ jobs:
       - name: Recreate Android Project
         run: flutter create . --platforms=android
 
+      # WebView ke liye minSdkVersion update karne ke liye
+      - name: Fix minSdkVersion
+        run: |
+          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle || true
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 21/g' android/app/build.gradle.kts || true
+
+      # Icon tree shaking error fix karne ke liye flag
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
