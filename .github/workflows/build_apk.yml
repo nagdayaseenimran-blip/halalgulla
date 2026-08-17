@@ -34,8 +34,13 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Force minSdk 21 in Gradle
+        run: |
+          sed -i 's/minSdkVersion.*/minSdkVersion 21/g' android/app/build.gradle || true
+          sed -i 's/minSdk =.*/minSdk = 21/g' android/app/build.gradle.kts || true
+
       - name: Build APK Release
-        run: flutter build apk --release --no-tree-shake-icons --verbose
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
