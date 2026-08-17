@@ -28,13 +28,15 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Recreate Android Project
-        run: flutter create . --platforms=android --org com.mediahub.app
+      - name: Clean & Recreate Android Folder
+        run: |
+          rm -rf android
+          flutter create . --platforms=android --org com.hallagulla.app
 
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Force minSdk 21 in Gradle
+      - name: Fix minSdkVersion for WebView
         run: |
           sed -i 's/minSdkVersion.*/minSdkVersion 21/g' android/app/build.gradle || true
           sed -i 's/minSdk =.*/minSdk = 21/g' android/app/build.gradle.kts || true
